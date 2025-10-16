@@ -1,0 +1,197 @@
+{
+  "name": "03_action_nodes_rss.json",
+  "nodes": [
+    {
+      "parameters": {
+        "chatId": "5962742034",
+        "text": "=연합뉴스 산업 분야 기사입니다.\n제목 : {{ $json.title }}\n발행일 : {{ $json.pubDate }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        368,
+        160
+      ],
+      "id": "40af6631-3afb-4c19-ac46-3e8710bd2846",
+      "name": "Send a text message",
+      "webhookId": "12e25cc3-8fb4-4682-91d9-44ec2e05d80d",
+      "credentials": {
+        "telegramApi": {
+          "id": "LEORyiwgaD3yzM0m",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -224,
+        160
+      ],
+      "id": "fa750c8e-e558-4b01-9a86-1a787b1b4590",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://news-ex.jtbc.co.kr/v1/get/rss/issue",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -32,
+        336
+      ],
+      "id": "6b9e21a0-cf34-4217-a306-8cad9269c73f",
+      "name": "RSS Read"
+    },
+    {
+      "parameters": {
+        "maxItems": 3,
+        "keep": "lastItems"
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        160,
+        336
+      ],
+      "id": "4bb586d3-47b2-4348-a95f-c4d6235f2f7c",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "chatId": "5962742034",
+        "text": "=JTBC 이슈 TOP 3입니다.\n제목 : {{ $json.title }}\n발행일 : {{ $json.pubDate }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        368,
+        336
+      ],
+      "id": "6d63fef2-01ba-4949-8784-9b9b9fee421d",
+      "name": "Send a text message1",
+      "webhookId": "12e25cc3-8fb4-4682-91d9-44ec2e05d80d",
+      "credentials": {
+        "telegramApi": {
+          "id": "LEORyiwgaD3yzM0m",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://www.yna.co.kr/rss/industry.xml",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -32,
+        160
+      ],
+      "id": "733c285f-000a-40a2-9c8e-533040d720e7",
+      "name": "RSS Read1"
+    },
+    {
+      "parameters": {
+        "maxItems": 3,
+        "keep": "lastItems"
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        160,
+        160
+      ],
+      "id": "fc486876-6292-4957-bb97-d57e40d7f0bd",
+      "name": "Limit1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Read1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read1": {
+      "main": [
+        [
+          {
+            "node": "Limit1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit1": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "09c076d4-ca77-4e89-9f6f-36ac6fb995a1",
+  "meta": {
+    "instanceId": "53313f7c3d79681499a7d077a3b73337aafb7601b600e29f82111334787e45a9"
+  },
+  "id": "kquLgbDcfhlq4SXm",
+  "tags": []
+}
