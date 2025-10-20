@@ -49,9 +49,6 @@
 
 <!-- end list -->
 
-````
-
----
 
 ## 2. 💰 기본적 분석 프롬프트 (Fundamental Analysis Prompt)
 
