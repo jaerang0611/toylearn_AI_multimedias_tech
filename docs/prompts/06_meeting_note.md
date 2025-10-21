@@ -1,3 +1,18 @@
+## Prompts
+
+```
+내가 링크로 2개의 회의 녹취록 파일을 줄게.
+너는 이거를 업무 회의록 형식으로 아주 잘 만들어 줘.
+단, github의 md 파일 형식으로 만들어 줘.
+단, 결과물에서 이런 내용은 빼 줘. [cite_start], [cite: 숫자]
+그리고, 회의록의 담당자는 나야.
+
+[ 링크 ]
+https://docs.google.com/document/d/1sNeN3GRr044wWSfXkF7h12mQ9arGzgoEdD_eUM8YLOU/edit?tab=t.0
+https://docs.google.com/document/d/1wWXJxOSIHSp9AsurrPVg-xY4z-3VQhSrKiCSeEfgAys/edit?tab=t.0
+
+```
+
 # 🌳 초록숲 재단 '내 숨을 위한 한 평의 숲' 공익 캠페인 킥오프 미팅 회의록
 
 | 구분 | 내용 | 비고 |
