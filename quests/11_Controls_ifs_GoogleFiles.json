@@ -1,5 +1,5 @@
 {
-  "name": "My workflow 4",
+  "name": "11_Controls_ifs_GoogleFiles",
   "nodes": [
     {
       "parameters": {},
@@ -7,7 +7,7 @@
       "typeVersion": 1,
       "position": [
         -624,
-        -176
+        -56
       ],
       "id": "d30c564a-837a-45db-98d0-7a3f24579595",
       "name": "When clicking ‘Execute workflow’"
@@ -20,7 +20,7 @@
       "typeVersion": 3,
       "position": [
         -176,
-        -176
+        -56
       ],
       "id": "50df91db-f3da-411e-885a-9f40aca00863",
       "name": "Loop Over Items"
@@ -50,7 +50,7 @@
       "typeVersion": 3,
       "position": [
         48,
-        -176
+        -272
       ],
       "id": "a9b6096e-8f65-44d8-81ae-ab8ded6f1a88",
       "name": "Move file",
@@ -89,7 +89,7 @@
       "typeVersion": 2.2,
       "position": [
         272,
-        -176
+        -272
       ],
       "id": "ebf92930-589b-4b7e-b0d1-fbec9070299d",
       "name": "If"
@@ -361,7 +361,7 @@
       "typeVersion": 3,
       "position": [
         -400,
-        -176
+        -56
       ],
       "id": "d4e8ed31-cf7b-4c2f-80fb-48dfb7fca46d",
       "name": "Search files and folders",
@@ -510,7 +510,7 @@
       "typeVersion": 3,
       "position": [
         1648,
-        -80
+        40
       ],
       "id": "b8abbbf6-8fd9-40be-a39f-d30672acca18",
       "name": "Move file2",
@@ -663,13 +663,35 @@
           }
         ]
       ]
+    },
+    "Move file1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move file2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "c1ff3768-1573-4678-a973-95b34944a65d",
+  "versionId": "3f22abb1-4ae2-4db1-b2d4-6150b7a9016b",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "46f5867901f872abc84cad9014e1ca5cce271e0945d169a583ea214db2213908"
