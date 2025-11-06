@@ -1,0 +1,189 @@
+{
+  "name": "My workflow 4",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "이미지 변환 프로그램",
+        "formDescription": "이미지와 요청 사항을 입력해 주세요",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "prompt",
+              "placeholder": "프롬프트를 입력해 주세요",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "image",
+              "fieldType": "file",
+              "multipleFiles": false,
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        0,
+        -176
+      ],
+      "id": "7a59729a-bd9f-4d2b-b5c3-7d124de226d0",
+      "name": "On form submission",
+      "webhookId": "ac7f7803-527b-4e7a-a88d-9c9f78ea1453"
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "binaryPropertyName": "image",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        224,
+        -176
+      ],
+      "id": "c66affa7-f68b-4e03-a311-ce000a57e119",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-goog-api-key",
+              "value": "AIzaSyBMFltmIkEudDKTGPzIUpZbeWILUyDf3Vo"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [{\n    \"parts\": [\n      {\n        \"text\": \"{{ $('On form submission').item.json.prompt }}\"\n      },\n      {\n        \"inline_data\": {\n          \"mime_type\": \"{{ $('On form submission').item.json.image.mimetype }}\",\n          \"data\": \"{{ $json.data }}\"\n        }\n      }\n    ]\n  }]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        448,
+        -176
+      ],
+      "id": "2358698d-c8ba-43e8-94e2-f0757e7e1574",
+      "name": "HTTP Request6"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "candidates[0].content.parts[1].inlineData.data",
+        "binaryPropertyName": "image",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        -176
+      ],
+      "id": "3c648af8-ea55-4cb3-90d7-9847e1191520",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "inputDataFieldName": "image",
+        "name": "16_multimedia_images",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "12CFAnLMsvtywPKArCbUIncfsbtAnnPx3",
+          "mode": "list",
+          "cachedResultName": "images",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/12CFAnLMsvtywPKArCbUIncfsbtAnnPx3"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        896,
+        -176
+      ],
+      "id": "288e0653-32b9-4629-8d89-0b6730c56dc7",
+      "name": "Upload file1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "aKzrswXzm0QVXTSY",
+          "name": "Google Drive account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request6": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Upload file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1726ec7b-7a74-4660-82d1-f103135b9d4c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b9c29cf3b76987833a40a9289508e54a71aea119ee62de28cd08dac9857a42be"
+  },
+  "id": "zq76riPuC8Em2eIU",
+  "tags": []
+}
