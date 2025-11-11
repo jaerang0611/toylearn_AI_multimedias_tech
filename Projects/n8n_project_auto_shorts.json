@@ -27,7 +27,6 @@
             }
           ]
         },
-        "jsonOutput": true,
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
@@ -56,7 +55,7 @@
         "messages": {
           "values": [
             {
-              "content": "=아래 내용으로 유튜브 숏폼을 만드려고 해.\nsubject를 뽑아 주고,\nimage와 narration을 뽑아줘.\n단, image 갯수와 narration 갯수를 맞춰줘.\n마지막으로 갯수를 count로 알려줘.\n\n{{ $json['Link or Contents'] }}"
+              "content": "=아래 내용으로 유튜브 숏폼을 만드려고 해.\nsubject를 뽑아 주고,\nimage와 narration을 뽑아줘.\n단, image 갯수와 narration 갯수를 맞춰줘.\n\n{{ $json['Link or Contents'] }}"
             }
           ]
         },
@@ -130,7 +129,8 @@
             "key_date": "={{ $('Get row(s) in sheet').item.json.key_date }}",
             "Subject": "={{ $('Edit Fields').item.json.content.parts[0].text.subject }}",
             "scene_Narration": "={{ $('Edit Fields').item.json.content.parts[0].text.narration }}",
-            "scene_description": "={{ $('Edit Fields').item.json.content.parts[0].text.image }}"
+            "scene_description": "={{ $('Edit Fields').item.json.content.parts[0].text.image }}",
+            "Status": "시나리오 완료"
           },
           "matchingColumns": [
             "key_date"
@@ -154,7 +154,7 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true,
-              "removed": true
+              "removed": false
             },
             {
               "id": "Link or Contents",
@@ -272,12 +272,12 @@
       "parameters": {
         "content": "1단계\n",
         "height": 256,
-        "width": 784
+        "width": 768
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -56,
+        -40,
         408
       ],
       "id": "1e6c7bdc-7553-4c3b-9614-a6e085d6cb33",
@@ -287,29 +287,16 @@
       "parameters": {
         "content": "2단계\n",
         "height": 256,
-        "width": 1200
+        "width": 1152
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        768,
+        784,
         416
       ],
       "id": "2e1acf97-fad4-4716-85d1-c3acb482d214",
       "name": "Sticky Note1"
-    },
-    {
-      "parameters": {
-        "command": "=mkdir -p  {{ $json.resource_dir }} &&\ncd {{ $json.resource_dir }} &&\nrm -f *"
-      },
-      "type": "n8n-nodes-base.executeCommand",
-      "typeVersion": 1,
-      "position": [
-        1600,
-        504
-      ],
-      "id": "b35bd31a-b963-4fe5-a5a4-7158906f92f5",
-      "name": "Execute Command1"
     },
     {
       "parameters": {
@@ -404,13 +391,13 @@
       "parameters": {
         "content": "3단계",
         "height": 624,
-        "width": 1600
+        "width": 1584
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        2000,
-        208
+        1976,
+        176
       ],
       "id": "fd6c976b-9b68-4d4f-856e-81f3535c7f3a",
       "name": "Sticky Note2"
@@ -438,7 +425,7 @@
           "parameters": [
             {
               "name": "x-goog-api-key",
-              "value": "AIzaSyADFcjOjOc04S24c-x2TYSRMvqVFMjj0cg"
+              "value": "AIzaSyDZUvjJ1kBQjTnRnhn-nYL1ivIikAgRQ5A"
             },
             {
               "name": "Content-Type",
@@ -469,7 +456,7 @@
           "parameters": [
             {
               "name": "x-goog-api-key",
-              "value": "AIzaSyD_w3SSo4nvN6mj4BA2khGkiIRTEJVls50"
+              "value": "AIzaSyDZUvjJ1kBQjTnRnhn-nYL1ivIikAgRQ5A"
             },
             {
               "name": "Content-Type",
@@ -506,7 +493,57 @@
     },
     {
       "parameters": {
-        "operation": "appendOrUpdate",
+        "maxItems": "=1"
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        3392,
+        584
+      ],
+      "id": "44497a5a-a4cb-440f-ad89-c7244050709d",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "scene_Narration, scene_description",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        2048,
+        504
+      ],
+      "id": "8a4dff25-b130-4079-ba2d-b8a2b1899d8e",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4dc4e171-26b7-4a15-81b2-0ac78bb62284",
+              "name": "runIndex",
+              "value": "={{ $runIndex }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2496,
+        608
+      ],
+      "id": "b1400165-fc65-4b32-a0bc-dd568e3ddeae",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
         "documentId": {
           "__rl": true,
           "value": "https://docs.google.com/spreadsheets/d/1co15kxUqjLZtml2BOOLeYrqhDTVDnN4a7BHiRAmLTkE/edit?gid=0#gid=0",
@@ -611,7 +648,7 @@
         504
       ],
       "id": "80ba6ac4-42ea-4836-9947-afd731b7882c",
-      "name": "Append or update row in sheet",
+      "name": "Append row in sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "a5WxRKcydjiRctBD",
@@ -621,78 +658,19 @@
     },
     {
       "parameters": {
-        "maxItems": "=1"
+        "command": "=mkdir -p  {{ $json.resource_dir }} &&\ncd {{ $json.resource_dir }} &&\nrm -f *"
       },
-      "type": "n8n-nodes-base.limit",
+      "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
       "position": [
-        3392,
-        584
-      ],
-      "id": "44497a5a-a4cb-440f-ad89-c7244050709d",
-      "name": "Limit"
-    },
-    {
-      "parameters": {
-        "fieldToSplitOut": "scene_Narration, scene_description",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.splitOut",
-      "typeVersion": 1,
-      "position": [
-        2048,
+        1600,
         504
       ],
-      "id": "8a4dff25-b130-4079-ba2d-b8a2b1899d8e",
-      "name": "Split Out"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "4dc4e171-26b7-4a15-81b2-0ac78bb62284",
-              "name": "runIndex",
-              "value": "={{ $runIndex }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        2496,
-        608
-      ],
-      "id": "b1400165-fc65-4b32-a0bc-dd568e3ddeae",
-      "name": "Edit Fields1"
+      "id": "b35bd31a-b963-4fe5-a5a4-7158906f92f5",
+      "name": "Execute Command1"
     }
   ],
-  "pinData": {
-    "Message a model": [
-      {
-        "json": {
-          "content": {
-            "parts": [
-              {
-                "text": "{\n  \"fitness_tip\": \"근육 성장과 근력 증진을 위해서는 점진적 과부하(Progressive Overload) 원리를 적용하는 것이 중요합니다. 이는 시간이 지남에 따라 운동 강도(무게, 반복 횟수, 세트 수, 운동 빈도 또는 운동 시간)를 점진적으로 늘려 근육에 지속적인 자극을 주는 것을 의미합니다. 같은 무게와 반복 횟수만 반복하면 근육은 그 자극에 적응하여 더 이상 성장하지 않습니다.\"\n}"
-              }
-            ],
-            "role": "model"
-          },
-          "finishReason": "STOP",
-          "index": 0
-        }
-      }
-    ],
-    "When clicking ‘Execute workflow’": [
-      {
-        "json": {}
-      }
-    ]
-  },
+  "pinData": {},
   "connections": {
     "When clicking ‘Execute workflow’": {
       "main": [
@@ -709,7 +687,7 @@
       "main": [
         [
           {
-            "node": "Append or update row in sheet",
+            "node": "Append row in sheet",
             "type": "main",
             "index": 0
           }
@@ -743,17 +721,6 @@
         [
           {
             "node": "Message a model1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Execute Command1": {
-      "main": [
-        [
-          {
-            "node": "Update row in sheet",
             "type": "main",
             "index": 0
           }
@@ -881,17 +848,6 @@
         ]
       ]
     },
-    "Append or update row in sheet": {
-      "main": [
-        [
-          {
-            "node": "Get row(s) in sheet",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Limit": {
       "main": [
         [
@@ -935,13 +891,35 @@
           }
         ]
       ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command1": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "7cbd51ab-9087-4909-8e32-c60936076d76",
+  "versionId": "ebe51eb2-2f9b-4647-a5cb-485fc6c54400",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "b9c29cf3b76987833a40a9289508e54a71aea119ee62de28cd08dac9857a42be"
